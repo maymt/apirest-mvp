@@ -10,12 +10,12 @@ const pool = new Pool({
 });
 
 const getPedidos = async (req, res) => {
-    const response = await pool.query('SELECT * FROM pedidos');
+    const response = await pool.query('SELECT * FROM tabla2');
     res.status(200).json(response.rows);
 };
 
 const getPedidoByObra = async (req, res) => {
-    const response = await pool.query('SELECT * FROM pedidos WHERE obra_oc = $1', [req.params.obra_oc]);
+    const response = await pool.query('SELECT * FROM tabla2 WHERE obra_oc = $1', [req.params.obra_oc]);
     res.json(response.rows)
 };
 
