@@ -15,11 +15,22 @@ const getPedidos = async (req, res) => {
 };
 
 const getPedidoByObra = async (req, res) => {
-    const response = await pool.query('SELECT * FROM tabla2 WHERE obra_oc = $1', [req.params.obra_oc]);
+    const values = req.params;
+    console.log(values.fecha_inicio, values.obra_oc, values.fecha_fin);
+    const response = await pool.query('SELECT * FROM tabla2 WHERE obra_oc = $1 AND fecha BETWEEN $2 AND $3', [values.obra_oc, values.fecha_inicio, values.fecha_fin]);
     res.json(response.rows)
 };
 
+const getSumaByObra = async (req, res) => {
+    const values = req.params;
+    console.log(values.fecha_inicio, values.obra_oc, values.fecha_fin);
+    const response = await pool.query('SELECT SUM(tabla2.atraso) AS min_atraso, SUM(tabla2.adicionales) AS min_adicionales FROM tabla2 WHERE obra_oc = $1 AND fecha BETWEEN $2 AND $3', [values.obra_oc, values.fecha_inicio, values.fecha_fin]);
+    res.json(response.rows)
+};
+
+
 module.exports = {
     getPedidos,
-    getPedidoByObra
+    getPedidoByObra,
+    getSumaByObra
 }
